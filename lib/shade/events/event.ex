@@ -7,10 +7,11 @@ defmodule Shade.Events.Event do
   alias Shade.Events.Event
 
   schema "events" do
-    field :description, :string
     field :name, :string
-    field :player, :integer
     field :type, :string
+    field :description, :string
+    field :bonus, :string
+    field :weigth, :integer
 
     timestamps()
   end
@@ -18,21 +19,24 @@ defmodule Shade.Events.Event do
   @doc false
   def changeset(%Event{} = event, attrs) do
     event
-    |> cast(attrs, [:name, :type, :description, :player])
-    |> validate_required([:name, :type, :description, :player])
+    |> cast(attrs, [:name, :type, :description, :bonus, :weigth])
+    |> validate_required([:name, :type, :description, :bonus, :weigth])
   end
 
   defmodule Queries do
-    def random do
-      query_random_event = Shade.Repo.one(from event in Event,
-                                           select: %{ name: event.name, type: event.type, description: event.description, player: event.player },
-                                           order_by: [asc: fragment("RANDOM()")],
-                                           limit: 1)
+    def by_id(id) do
+      query_event_by_id = Shade.Repo.one(from event in Event,
+                                           where: event.id == ^id,
+                                           select: %{name: event.name, type: event.type, description: event.description, player: event.bonus})
+    end
+    def all_id_weigth() do
+      query_event_by_id = Shade.Repo.all(from event in Event,
+                                         select: %{id: event.id, weigth: event.weigth})
     end
     def random_by_type(type) do
       query_event_by_type = Shade.Repo.one(from event in Event,
                                             where: event.type == ^type,
-                                            select: %{ name: event.name, type: event.type, description: event.description, player: event.player},
+                                            select: %{name: event.name, type: event.type, description: event.description, player: event.bonus},
                                             order_by: [asc: fragment("RANDOM()")],
                                             limit: 1)
     end

@@ -7,7 +7,8 @@ defmodule Shade.Repo.Migrations.CreateEvent do
       add :name, :string
       add :type, :string
       add :description, :string
-      add :player, :integer
+      add :bonus, :string
+      add :weigth, :integer
 
       timestamps()
     end
