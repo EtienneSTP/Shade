@@ -1,17 +1,13 @@
 defmodule Shade.Events.Service do
-  #Alias
+  # Alias
   alias Shade.Events.Event
-  alias Shade.Players.Player
+  alias Shade.Players
+  alias Shade.Constants.Dice
+  alias Shade.Constants.Card
+  alias Shade.Constants.Player
+  alias Shade.Constants.Misc
 
-  #Constants
-  @card_number    ~w(1 2 3 4 5 6 7 8 9 10 Jack Queen King)s
-  @card_types     ~w(Heart Diamond Spade Club)s
-  @dice_low       ~w(1d2 1d4 1d6)s
-  @dice_mid       ~w(1d2 1d4 1d6 1d8 1d10)s
-  @dice_high      ~w(1d2 1d4 1d6 1d8 1d10 1d12 1d20)s
-
-  @player_amount  ["Everyone", "{%PI} vs {%PI}", "{%PI} and {%PI} vs {%PI} and {%PI}",]
-  @target_type    ["anyone", "anyone", "anyone", "the opponent", "{%PT}", "{%PT} and {%PT}", "{%PT} or {%PT}"]
+  # Constants
   @element_type %{
     player_initial:           "{%PI}",
     player_target:            "{%PT}",
@@ -24,7 +20,9 @@ defmodule Shade.Events.Service do
     dice_high:                "DH",
 
     card_number:              "CN",
-    card_type:                "CT"
+    card_type:                "CT",
+
+    high_low:                 "HL"
   }
 
   def play_random do
@@ -38,8 +36,8 @@ defmodule Shade.Events.Service do
       selected_event.description
       |> update_event_description()
 
-    player = Player.Queries.random(count_element(description, @element_type.player_initial))
-    target = Player.Queries.random(count_element(description, @element_type.player_target))
+    player = Players.Player.Queries.random(count_element(description, @element_type.player_initial))
+    target = Players.Player.Queries.random(count_element(description, @element_type.player_target))
 
     updated_description =
       description
@@ -72,15 +70,17 @@ defmodule Shade.Events.Service do
   #TODO: validate amount of event having more then one instance of same element(worth generating each time?)
   defp update_event_description(description) do
     element = %{
-      @element_type.dice_low => Enum.random(@dice_low),
-      @element_type.dice_mid => Enum.random(@dice_mid),
-      @element_type.dice_high => Enum.random(@dice_high),
+      @element_type.dice_low              => Dice.get_dice(:low),
+      @element_type.dice_mid              => Dice.get_dice(:mid),
+      @element_type.dice_high             => Dice.get_dice(:high),
 
-      @element_type.card_number => Enum.random(@card_number),
-      @element_type.card_type => Enum.random(@card_types),
+      @element_type.card_number           => Card.get_card(:number),
+      @element_type.card_type             => Card.get_card(:type),
 
-      @element_type.amount_player_initial => Enum.random(@player_amount),
-      @element_type.amount_player_target => Enum.random(@target_type)
+      @element_type.amount_player_initial => Player.get_player(:high, :initial),
+      @element_type.amount_player_target  => Player.get_player(:high, :target),
+
+      @element_type.high_low              => Misc.get_misc(:high_low)
     }
 
     Regex.replace(~r/{([a-zA-Z]+)?}/, description, fn(_, match) -> element[match] end)
@@ -98,11 +98,14 @@ defmodule Shade.Events.Service do
   end
 
   #Test
-
   def test_random() do
     test_random(1000, [])
   end
-  def test_random(count, result) when count == 0, do: Enum.reduce(result, %{}, fn(element, acc) -> Map.update(acc, element, 1, &(&1 + 1)) end)
+  def test_random(count, result) when count == 0 do
+    result
+    |> Enum.reduce(%{}, fn(element, acc) -> Map.update(acc, element, 1, &(&1 + 1)) end)
+    #|> Enum.sort()
+  end
   def test_random(count, result) do
     events_list = Event.Queries.all_id_weigth()
     events_weigthed_list = create_weigthed_list(events_list)

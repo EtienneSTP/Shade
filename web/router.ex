@@ -26,5 +26,6 @@ defmodule Shade.Router do
     get "/", EventController, :event
     get "/critic", EventController, :critic
     get "/famble", EventController, :famble
+    get "/test", EventController, :test_random
   end
 end

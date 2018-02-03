@@ -16,7 +16,6 @@ defmodule Shade.Events.Event do
     timestamps()
   end
 
-  @doc false
   def changeset(%Event{} = event, attrs) do
     event
     |> cast(attrs, [:name, :type, :description, :bonus, :weigth])
@@ -27,7 +26,7 @@ defmodule Shade.Events.Event do
     def by_id(id) do
       query_event_by_id = Shade.Repo.one(from event in Event,
                                            where: event.id == ^id,
-                                           select: %{name: event.name, type: event.type, description: event.description, player: event.bonus})
+                                           select: %{name: event.name, type: event.type, description: event.description, bonus: event.bonus})
     end
     def all_id_weigth() do
       query_event_by_id = Shade.Repo.all(from event in Event,
@@ -36,7 +35,7 @@ defmodule Shade.Events.Event do
     def random_by_type(type) do
       query_event_by_type = Shade.Repo.one(from event in Event,
                                             where: event.type == ^type,
-                                            select: %{name: event.name, type: event.type, description: event.description, player: event.bonus},
+                                            select: %{name: event.name, type: event.type, description: event.description, bonus: event.bonus},
                                             order_by: [asc: fragment("RANDOM()")],
                                             limit: 1)
     end
