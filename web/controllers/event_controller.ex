@@ -12,6 +12,7 @@ defmodule Shade.EventController do
     |> assign(:name, event.name)
     |> assign(:type, event.type)
     |> assign(:description, event.description)
+    |> assign(:bonus, event.bonus)
     |> render("event.html")
   end
 
@@ -22,6 +23,7 @@ defmodule Shade.EventController do
     |> assign(:name, event.name)
     |> assign(:type, event.type)
     |> assign(:description, event.description)
+    |> assign(:bonus, event.bonus)
     |> render("critic.html")
   end
 
@@ -32,6 +34,7 @@ defmodule Shade.EventController do
     |> assign(:name, event.name)
     |> assign(:type, event.type)
     |> assign(:description, event.description)
+    |> assign(:bonus, event.bonus)
     |> render("famble.html")
   end
 

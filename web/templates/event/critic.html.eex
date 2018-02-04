@@ -8,6 +8,9 @@
   <h2><%= @description %></h2>
 </div>
 <div class="jumbotron">
+  <h2><%= @bonus %></h2>
+</div>
+<div class="jumbotron">
     <a href="/event">Next Event</a>
     <a href="/event/critic">Critic</a>
     <a href="/event/famble">Famble</a>

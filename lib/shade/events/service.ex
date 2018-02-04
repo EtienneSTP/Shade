@@ -6,6 +6,7 @@ defmodule Shade.Events.Service do
   alias Shade.Constants.Card
   alias Shade.Constants.Player
   alias Shade.Constants.Misc
+  alias Shade.Helpers.General
 
   # Constants
   @element_type %{
@@ -28,7 +29,7 @@ defmodule Shade.Events.Service do
   def play_random do
     selected_event =
       Event.Queries.all_id_weigth()
-      |> create_weigthed_list()
+      |> General.create_weigthed_list()
       |> Enum.random()
       |> Event.Queries.by_id()
 
@@ -36,15 +37,22 @@ defmodule Shade.Events.Service do
       selected_event.description
       |> update_event_description()
 
-    player = Players.Player.Queries.random(count_element(description, @element_type.player_initial))
-    target = Players.Player.Queries.random(count_element(description, @element_type.player_target))
+    player =
+      description
+      |> General.count_element(@element_type.player_initial)
+      |> Players.Player.Queries.random()
+
+    target =
+      description
+      |> General.count_element(@element_type.player_target)
+      |> Players.Player.Queries.random()
 
     updated_description =
       description
       |> insert_player(player, @element_type.player_initial)
       |> insert_player(target, @element_type.player_target)
 
-    %{name: selected_event.name, type: selected_event.type, description: updated_description}
+    %{name: selected_event.name, type: selected_event.type, description: updated_description, bonus: selected_event.bonus}
   end
 
   def play_crit_famble(type) do
@@ -55,19 +63,9 @@ defmodule Shade.Events.Service do
       |> insert_player([%{name: "You"}], @element_type.player_initial)
       |> update_event_description()
 
-    %{name: event.name, type: event.type, description: description}
+    %{name: event.name, type: event.type, description: description, bonus: event.bonus}
   end
 
-  defp create_weigthed_list(list) do
-    Enum.reduce(list, [], fn(event, acc) -> append_weigthed_list(event.id, event.weigth, acc) end)
-  end
-
-  defp append_weigthed_list(_, weigth, result) when weigth == 0, do: result
-  defp append_weigthed_list(id, weigth, result) do
-    append_weigthed_list(id, weigth - 1, result ++ [id])
-  end
-
-  #TODO: validate amount of event having more then one instance of same element(worth generating each time?)
   defp update_event_description(description) do
     element = %{
       @element_type.dice_low              => Dice.get_dice(:low),
@@ -86,12 +84,6 @@ defmodule Shade.Events.Service do
     Regex.replace(~r/{([a-zA-Z]+)?}/, description, fn(_, match) -> element[match] end)
   end
 
-  defp count_element(description, element) do
-    description
-    |> String.split()
-    |> Enum.count(fn x -> x == element end)
-  end
-
   defp insert_player(desc, [], _), do: desc
   defp insert_player(desc, [head | tail], type) do
     insert_player(String.replace(desc, type, head.name, global: false), tail, type)
@@ -108,7 +100,7 @@ defmodule Shade.Events.Service do
   end
   def test_random(count, result) do
     events_list = Event.Queries.all_id_weigth()
-    events_weigthed_list = create_weigthed_list(events_list)
+    events_weigthed_list = General.create_weigthed_list(events_list)
     selected_event = Event.Queries.by_id(Enum.random(events_weigthed_list))
     test_random(count - 1, result ++ [selected_event.name])
   end
