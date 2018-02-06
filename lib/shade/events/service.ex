@@ -9,6 +9,7 @@ defmodule Shade.Events.Service do
   alias Shade.Helpers.General
 
   # Constants
+  @bonus_probability          10
   @element_type %{
     player_initial:           "{%PI}",
     player_target:            "{%PT}",
@@ -51,8 +52,10 @@ defmodule Shade.Events.Service do
       description
       |> insert_player(player, @element_type.player_initial)
       |> insert_player(target, @element_type.player_target)
+      
+    bonus = select_bonus(selected_event.bonus)
 
-    %{name: selected_event.name, type: selected_event.type, description: updated_description, bonus: selected_event.bonus}
+    %{name: selected_event.name, type: selected_event.type, description: updated_description, bonus: bonus}
   end
 
   def play_crit_famble(type) do
@@ -81,7 +84,13 @@ defmodule Shade.Events.Service do
       @element_type.high_low              => Misc.get_misc(:high_low)
     }
 
-    Regex.replace(~r/{([a-zA-Z]+)?}/, description, fn(_, match) -> element[match] end)
+    Regex.replace(~r/{([a-zA-Z]+)?}/, description, fn(_, match) -> element[match] end)    #TODO: Regex cap-no-cap all in one
+  end
+
+  defp select_bonus(bonus_list) do
+    if(bonus_list != nil && General.chance_select(@bonus_probability)) do
+      Enum.random(bonus_list)
+    end
   end
 
   defp insert_player(desc, [], _), do: desc
@@ -106,6 +115,4 @@ defmodule Shade.Events.Service do
   end
 end
 
-#TODO: create lib/shade/helper directory for function like process_weigthed_list, count element
 #TODO: Test process in the right directory [how to run test]
-#TODO: Create a constant file

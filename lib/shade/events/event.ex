@@ -10,7 +10,7 @@ defmodule Shade.Events.Event do
     field :name, :string
     field :type, :string
     field :description, :string
-    field :bonus, :string
+    field :bonus, {:array, :string}
     field :weigth, :integer
 
     timestamps()
@@ -29,7 +29,7 @@ defmodule Shade.Events.Event do
                                            select: %{name: event.name, type: event.type, description: event.description, bonus: event.bonus})
     end
     def all_id_weigth() do
-      query_event_by_id = Shade.Repo.all(from event in Event,
+      query_event_weigth = Shade.Repo.all(from event in Event,
                                          select: %{id: event.id, weigth: event.weigth})
     end
     def random_by_type(type) do

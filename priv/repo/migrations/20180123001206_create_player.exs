@@ -4,9 +4,7 @@ defmodule Shade.Repo.Migrations.CreateEvent do
 
   def change do
     create table(:players) do
-      add :name, :string
-
-      timestamps()
+      add :name, :string, size: 255
     end
   end
 end

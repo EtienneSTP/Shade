@@ -9,6 +9,14 @@ defmodule Shade.Helpers.General do
     |> Enum.count(fn x -> x == element end)
   end
 
+  def chance_select(probability) do
+    result=
+    1..probability
+      |> Enum.random()
+
+    result == probability
+  end
+
   defp append_weigthed_list(_, weigth, result) when weigth == 0, do: result
   defp append_weigthed_list(id, weigth, result) do
     append_weigthed_list(id, weigth - 1, result ++ [id])
