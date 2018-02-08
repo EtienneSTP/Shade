@@ -5,5 +5,5 @@
   <h2><%= @joke %></h2>
 </div>
 <div class="jumbotron">
-  <h2><%= @joke %></h2>
+  <h2><%= @question %></h2>
 </div>

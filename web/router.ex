@@ -28,4 +28,10 @@ defmodule Shade.Router do
     get "/famble", EventController, :famble
     get "/test", EventController, :test_random
   end
+
+  scope "test", Shade do
+    pipe_through(:browser)
+
+    get "/joke", TestController, :joke
+  end
 end

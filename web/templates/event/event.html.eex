@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<%= static_path(@conn, "/css/event.css") %>">
+<link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
 <div class="jumbotron">
   <h2 class="event_title"><%= @name %></h2>
 </div>

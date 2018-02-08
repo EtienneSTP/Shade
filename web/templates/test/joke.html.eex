@@ -1,8 +1,5 @@
 <div class="jumbotron">
-  <h2 Test</h2>
-</div>
-<div class="jumbotron">
-  <h2><%= @joke %></h2>
+  <h2>Joke Test</h2>
 </div>
 <div class="jumbotron">
   <h2><%= @joke %></h2>
