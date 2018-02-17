@@ -1,6 +1,6 @@
-defmodule Shade.EventController do
+defmodule ShadeWeb.EventController do
   # Using
-  use Shade.Web, :controller
+  use ShadeWeb.Web, :controller
 
   # Aliases
   alias Shade.Events.Service
