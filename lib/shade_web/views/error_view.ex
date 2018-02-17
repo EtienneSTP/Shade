@@ -1,5 +1,5 @@
-defmodule Shade.ErrorView do
-  use Shade.Web, :view
+defmodule ShadeWeb.ErrorView do
+  use ShadeWeb.Web, :view
 
   def render("404.html", _assigns) do
     "Page not found"

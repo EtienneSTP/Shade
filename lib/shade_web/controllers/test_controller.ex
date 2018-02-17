@@ -1,6 +1,6 @@
 defmodule Shade.TestController do
   # Using
-  use Shade.Web, :controller
+  use ShadeWeb.Web, :controller
 
   # Aliases
   alias Shade.Jokes.Joke

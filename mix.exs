@@ -31,6 +31,8 @@ defmodule Shade.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+     {:absinthe, "~> 1.4.0"},
+     {:absinthe_plug, "~> 1.4"},
      {:httpoison, "~> 1.0.0"},
      {:phoenix, "~> 1.2.5"},
      {:phoenix_pubsub, "~> 1.0"},

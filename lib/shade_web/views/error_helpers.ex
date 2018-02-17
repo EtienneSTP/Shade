@@ -1,4 +1,4 @@
-defmodule Shade.ErrorHelpers do
+defmodule ShadeWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """

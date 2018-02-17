@@ -1,5 +1,5 @@
-defmodule Shade.Test do
-  use Shade.Web, :model
+defmodule ShadeWeb.Test do
+  use ShadeWeb.Web, :model
 
   schema "tests" do
     field :name, :string

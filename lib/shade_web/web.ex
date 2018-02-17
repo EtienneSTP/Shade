@@ -1,4 +1,4 @@
-defmodule Shade.Web do
+defmodule ShadeWeb.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
@@ -35,13 +35,13 @@ defmodule Shade.Web do
       import Ecto.Query
 
       import Shade.Router.Helpers
-      import Shade.Gettext
+      import ShadeWeb.Gettext
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "web/templates"
+      use Phoenix.View, root: "lib/shade_web/templates"
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
@@ -50,8 +50,8 @@ defmodule Shade.Web do
       use Phoenix.HTML
 
       import Shade.Router.Helpers
-      import Shade.ErrorHelpers
-      import Shade.Gettext
+      import ShadeWeb.ErrorHelpers
+      import ShadeWeb.Gettext
     end
   end
 
@@ -68,7 +68,7 @@ defmodule Shade.Web do
       alias Shade.Repo
       import Ecto
       import Ecto.Query
-      import Shade.Gettext
+      import ShadeWeb.Gettext
     end
   end
 
