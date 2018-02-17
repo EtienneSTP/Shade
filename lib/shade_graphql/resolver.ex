@@ -5,7 +5,7 @@ defmodule ShadeGraphql.Resolver do
   # Aliases
   alias Shade.Repo
 
-  def one(queryable), do: {:ok, Repo.one(queryable)}
+  def one(query), do: {:ok, query}
 
-  def all(queryable), do: {:ok, Repo.all(queryable)}
+  def all(query), do: {:ok, query}
 end

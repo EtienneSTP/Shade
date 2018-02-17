@@ -3,7 +3,7 @@ defmodule ShadeGraphql.Schema do
   use Absinthe.Schema
 
   # Alias
-  alias Shade.Resolvers
+  alias ShadeGraphql.Resolvers
 
   # Types
   #import_types Absinthe.Type.Custom

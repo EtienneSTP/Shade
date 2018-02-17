@@ -6,8 +6,8 @@ defmodule ShadeGraphql.Events.Type do
   alias ShadeGraphql.Events.Resolver
 
   object :event_queries do
-    field :event, :event do
-      resolve(&Resolver.one/0)
+    field :random_event, :event do
+      resolve(&Resolver.random_event/2)
     end
   end
 
@@ -16,6 +16,5 @@ defmodule ShadeGraphql.Events.Type do
     field :type, :string
     field :description, :string
     field :bonus, list_of(:string)
-    field :weigth, :integer
   end
 end

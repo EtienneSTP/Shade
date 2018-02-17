@@ -4,9 +4,10 @@ defmodule ShadeGraphql.Events.Resolver do
 
   # Aliases
   alias Shade.Events.Event
+  alias Shade.Events.Service
+  alias ShadeGraphql.Resolver
 
-  def one() do
-    #Event
-    #|where random etc
+  def random_event(_, _) do
+    {:ok, Service.play_random()}
   end
 end
